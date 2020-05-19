@@ -164,7 +164,7 @@ instance.prototype.action = function (action) {
         case 'change_external_input':
             service = 'avContent';
             method = 'setPlayContent';
-            let uri = 'extInput:' + kind + '?port=' + port;
+            let uri = 'extInput:' + options.kind + '?port=' + options.port;
             params = {uri: uri};
             break;
 		default:
