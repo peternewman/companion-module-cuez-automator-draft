@@ -1,0 +1,27 @@
+{
+	"name": "sony-bravia",
+	"version": "1.0.0",
+	"api_version": "1.0.0",
+	"keywords": [
+        "Sony",
+        "Bravia"
+	],
+	"manufacturer": "Sony",
+	"product": "Bravia",
+	"shortname": "sony-bravia",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bitfocus/companion-module-sony-bravia.git"
+	},
+	"author": "Joseph Adams <josephdadams@gmail.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/bitfocus/companion-module-sony-bravia/issues"
+	},
+	"homepage": "https://github.com/bitfocus/companion-module-sony-bravia#readme"
+}
