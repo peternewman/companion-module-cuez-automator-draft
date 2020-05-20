@@ -180,8 +180,8 @@ instance.prototype.action = function (action) {
 	self.postRest('/sony/' + service, host, port, cmdObj)
 	.then(function(arrResult) {
 		if (arrResult[2].error) {
-			//throw an error
-			self.status(self.STATUS_ERROR, arrResult[2].error);
+			//throw an error to the log
+			self.log('error', arrResult[2].error[1]);
 		}
 	})
 	.catch(function(arrResult) {
