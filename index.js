@@ -59,7 +59,7 @@ instance.prototype.config_fields = function () {
 			label: 'Target IP',
 			width: 6,
 			regex: self.REGEX_IP
-        },
+		},
 		{
 			type: 'textinput',
 			id: 'psk',
@@ -77,27 +77,27 @@ instance.prototype.destroy = function () {
 }
 
 instance.prototype.actions = function (system) {
-    var self = this;
+	var self = this;
 
 	self.system.emit('instance_actions', self.id, {
 		'power_on': {
 			label: 'Power On'
-        },
+		},
 		'power_off': {
 			label: 'Power Off'
-        },
-        'volume_up': {
+		},
+		'volume_up': {
 			label: 'Volume Up'
-        },
-        'volume_down': {
+		},
+		'volume_down': {
 			label: 'Volume Down'
-        },
-        'volume_mute': {
+		},
+		'volume_mute': {
 			label: 'Volume Mute'
-        },
-        'volume_unmute': {
+		},
+		'volume_unmute': {
 			label: 'Volume Unmute'
-        },
+		},
 		'change_external_input': {
 			label: 'Change External Input',
 			options: [
@@ -106,7 +106,7 @@ instance.prototype.actions = function (system) {
 					label: 'Kind',
 					id: 'kind',
 					choices: [ {id: 'hdmi', label: 'HDMI'}, {id: 'composite', label: 'Composite'}, {id: 'scart', label: 'SCART'}]
-                },
+				},
 				{
 					type: 'dropdown',
 					label: 'Port',
@@ -114,7 +114,7 @@ instance.prototype.actions = function (system) {
 					choices: [ {id: '1', label: '1'}, {id: '2', label: '2'}, {id: '3', label: '3'}, {id: '4', label: '4'} ]
 				}
 			]
-        }
+		}
 	});
 };
 
@@ -122,69 +122,71 @@ instance.prototype.action = function (action) {
 	let self = this;
 	let options = action.options;
 	
-    let host = self.config.host;
-    let port = 80;
-    let psk = self.config.psk;
+	let host = self.config.host;
+	let port = 80;
+	let psk = self.config.psk;
 
-    let service = null;
-    let method = null;
-    let params = null;
+	let service = null;
+	let method = null;
+	let params = null;
 
 	switch (action.action) {
 		case 'power_on':
-            service = 'system';
-            method = 'setPowerStatus';
-            params = {status: true};
-            break;
-        case 'power_on':
-            service = 'system';
-            method = 'setPowerStatus';
-            params = {status: false};
-            break;
-        case 'volume_up':
-            service = 'audio';
-            method = 'setAudioVolume';
-            params = {target: 'speaker', volume: '+1'};
-            break;
-        case 'volume_down':
-            service = 'audio';
-            method = 'setAudioVolume';
-            params = {target: 'speaker', volume: '-1'};
-            break;
-        case 'volume_mute':
-            service = 'audio';
-            method = 'setAudioMute';
-            params = {status: true};
-            break;
-        case 'volume_unmute':
-            service = 'audio';
-            method = 'setAudioMute';
-            params = {status: false};
-            break;
-        case 'change_external_input':
-            service = 'avContent';
-            method = 'setPlayContent';
-            let uri = 'extInput:' + options.kind + '?port=' + options.port;
-            params = {uri: uri};
-            break;
+			service = 'system';
+			method = 'setPowerStatus';
+			params = {status: true};
+			break;
+		case 'power_off':
+			service = 'system';
+			method = 'setPowerStatus';
+			params = {status: false};
+			break;
+		case 'volume_up':
+			service = 'audio';
+			method = 'setAudioVolume';
+			params = {target: 'speaker', volume: '+1'};
+			break;
+		case 'volume_down':
+			service = 'audio';
+			method = 'setAudioVolume';
+			params = {target: 'speaker', volume: '-1'};
+			break;
+		case 'volume_mute':
+			service = 'audio';
+			method = 'setAudioMute';
+			params = {status: true};
+			break;
+		case 'volume_unmute':
+			service = 'audio';
+			method = 'setAudioMute';
+			params = {status: false};
+			break;
+		case 'change_external_input':
+			service = 'avContent';
+			method = 'setPlayContent';
+			let uri = 'extInput:' + options.kind + '?port=' + options.port;
+			params = {uri: uri};
+			break;
 		default:
 			break;
-    }
+	}
 
-    console.log('service', service);
-    console.log('method', method);
-    console.log('params', params);
-    
-    self.postRest('/sony/' + service + '/' + method, host, port, params)
-    .then(function(arrResult) {
-        if (arrResult[2].error) {
-            //throw an error
-            self.status(self.STATUS_ERROR, arrResult[2].error);
-        }
-    })
-    .catch(function(arrResult) {
-        self.status(self.STATUS_ERROR, arrResult);
-    });
+	let cmdObj = {};
+	cmdObj.method = method;
+	cmdObj.version = '1.0';
+	cmdObj.id = 1;
+	cmdObj.params = [params];
+
+	self.postRest('/sony/' + service, host, port, cmdObj)
+	.then(function(arrResult) {
+		if (arrResult[2].error) {
+			//throw an error
+			self.status(self.STATUS_ERROR, arrResult[2].error);
+		}
+	})
+	.catch(function(arrResult) {
+		self.status(self.STATUS_ERROR, arrResult);
+	 });
 };
 
 instance.prototype.getRest = function(cmd, host, port) {
@@ -199,11 +201,10 @@ instance.prototype.postRest = function(cmd, host, port, body) {
 
 instance.prototype.doRest = function(method, cmd, host, port, body) {
 	var self = this;
-    var url = 'http://' + self.config.host + cmd;
-    
-    let extra_headers = [
-        { "X-Auth-PSK": self.config.psk }
-    ]
+	var url = 'http://' + self.config.host + cmd;
+
+	let extra_headers = {};
+	extra_headers['X-Auth-PSK'] = self.config.psk;
 
 	return new Promise(function(resolve, reject) {
 
@@ -243,8 +244,8 @@ instance.prototype.doRest = function(method, cmd, host, port, body) {
 				}, extra_headers);
 				break;
 			default:
-                throw new Error('Invalid method');
-                break;
+				throw new Error('Invalid method');
+				break;
 		}
 	});
 };
