@@ -2,10 +2,7 @@
 	"name": "sony-bravia",
 	"version": "1.0.0",
 	"api_version": "1.0.0",
-	"keywords": [
-        "Sony",
-        "Bravia"
-	],
+	"keywords": ["TV"],
 	"manufacturer": "Sony",
 	"product": "Bravia",
 	"shortname": "sony-bravia",
