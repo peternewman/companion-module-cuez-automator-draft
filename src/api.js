@@ -43,7 +43,7 @@ module.exports = {
 		self.sendCommand('avContent', 'getPlayingContentInfo', {}, 'input');
 	},
 
-	sendCommand: function(service, method, params, request) {
+	sendCommand: function(service, method, params, request = undefined) {
 		let self = this;
 
 		let cmdObj = {};
@@ -81,6 +81,7 @@ module.exports = {
 							break;
 						case 'input':
 							self.DATA.input = data.result[0][0].uri;
+							break;
 						default:
 							break;
 					}
@@ -90,7 +91,7 @@ module.exports = {
 				self.checkVariables();
 			})
 			.on('error', function(error) {
-				this.log('error', 'Error Sending Command ' + error.toString());
+				self.log('error', 'Error Sending Command ' + error.toString());
 			});
 		}
 		else {
