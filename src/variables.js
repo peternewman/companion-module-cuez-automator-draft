@@ -4,10 +4,10 @@ module.exports = {
 
 		let variables = [];
 
-		variables.push({variableId: 'powerState', label: 'Power State'});
-		variables.push({variableId: 'muteState', label: 'Mute State'});
-		variables.push({variableId: 'volumeLevel', label: 'Current Volume Level'});
-		variables.push({variableId: 'input', label: 'Current Input'});
+		variables.push({variableId: 'powerState', name: 'Power State'});
+		variables.push({variableId: 'muteState', name: 'Mute State'});
+		variables.push({variableId: 'volumeLevel', name: 'Current Volume Level'});
+		variables.push({variableId: 'input', name: 'Current Input'});
 
 		self.setVariableDefinitions(variables);
 	},

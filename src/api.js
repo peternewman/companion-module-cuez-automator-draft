@@ -50,45 +50,63 @@ module.exports = {
 		cmdObj.method = method;
 		cmdObj.version = '1.0';
 		cmdObj.id = 1;
-		cmdObj.params = [params];
+		if (JSON.stringify(params) == '{}') {
+			cmdObj.params = [];
+		}
+		else {
+			cmdObj.params = [params];
+		}
 
 		if (self.config.psk !== undefined && self.config.psk !== '') {
 			let args = {
 				data: cmdObj,
 				headers: {
-					'Content-Type': 'application/json',
-					'X-Auth-PSK': self.config.psk
+					"Content-Type": "application/json",
+					"X-Auth-PSK": self.config.psk
 				}
 			};
-		
+
 			let client = new Client();
 		
 			client.post(`http://${self.config.host}/sony/${service}`, args, function (data, response) {
 				//do something with response
-				if (request) {
-					switch(request) {
-						case 'allinputs':
-							self.DATA.inputs = data.result[0];
-							self.buildInputList();
-							self.initFeedbacks();
-							break;
-						case 'power':
-							self.DATA.powerState = (data.result[0].status === 'active' ? true : false);
-							break;
-						case 'volume':
-							self.DATA.volumeLevel = data.result[0][0].volume;
-							self.DATA.muteState = data.result[0][0].mute;
-							break;
-						case 'input':
-							self.DATA.input = data.result[0][0].uri;
-							break;
-						default:
-							break;
+				try {
+					if (response.statusCode == 200) {
+						if (request) {
+							switch(request) {
+								case 'allinputs':
+									self.DATA.inputs = data.result[0];
+									self.buildInputList();
+									self.initFeedbacks();
+									break;
+								case 'power':
+									self.DATA.powerState = (data.result[0].status === 'active' ? true : false);
+									break;
+								case 'volume':
+									self.DATA.volumeLevel = data.result[0][0].volume;
+									self.DATA.muteState = data.result[0][0].mute;
+									break;
+								case 'input':
+									self.DATA.input = data.result[0].uri;
+									break;
+								default:
+									break;
+							}
+						}
+		
+						self.checkFeedbacks();
+						self.checkVariables();
+					}
+					else {
+						if (response.statusCode == 403) {
+							self.log('error', 'PSK may be incorrect. Please check your PSK and try again.');
+							self.stopInterval();
+						}
 					}
 				}
-
-				self.checkFeedbacks();
-				self.checkVariables();
+				catch(error) {
+					self.log('error', 'Error processing response: ' + error);
+				}		
 			})
 			.on('error', function(error) {
 				self.log('error', 'Error Sending Command ' + error.toString());
