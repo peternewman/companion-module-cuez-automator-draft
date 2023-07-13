@@ -73,24 +73,31 @@ module.exports = {
 				try {
 					if (response.statusCode == 200) {
 						if (request) {
-							switch(request) {
-								case 'allinputs':
-									self.DATA.inputs = data.result[0];
-									self.buildInputList();
-									self.initFeedbacks();
-									break;
-								case 'power':
-									self.DATA.powerState = (data.result[0].status === 'active' ? true : false);
-									break;
-								case 'volume':
-									self.DATA.volumeLevel = data.result[0][0].volume;
-									self.DATA.muteState = data.result[0][0].mute;
-									break;
-								case 'input':
-									self.DATA.input = data.result[0].uri;
-									break;
-								default:
-									break;
+							if (data.result) {
+								switch(request) {
+									case 'allinputs':
+										self.DATA.inputs = data.result[0];
+										self.buildInputList();
+										self.initFeedbacks();
+										break;
+									case 'power':
+										self.DATA.powerState = (data.result[0].status === 'active' ? true : false);
+										break;
+									case 'volume':
+										self.DATA.volumeLevel = data.result[0][0].volume;
+										self.DATA.muteState = data.result[0][0].mute;
+										break;
+									case 'input':
+										self.DATA.input = data.result[0].uri;
+										break;
+									default:
+										break;
+								}
+							}
+							else {
+								if (data.error) {
+									//some error like display is probably off
+								}
 							}
 						}
 		
@@ -106,6 +113,8 @@ module.exports = {
 				}
 				catch(error) {
 					self.log('error', 'Error processing response: ' + error);
+					console.log(error);
+					console.log(data);
 				}		
 			})
 			.on('error', function(error) {

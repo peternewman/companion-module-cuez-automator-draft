@@ -17,8 +17,8 @@ module.exports = {
 
 		try {
 			self.setVariableValues({
-				'powerState': self.DATA.powerState,
-				'muteState': self.DATA.muteState,
+				'powerState': self.DATA.powerState ? 'On' : 'Off',
+				'muteState': self.DATA.muteState ? 'Muted' : 'Unmuted',
 				'volumeLevel': self.DATA.volumeLevel,
 				'input': self.DATA.input
 			});
