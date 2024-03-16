@@ -19,7 +19,7 @@ module.exports = {
 
 		self.stopInterval()
 
-		if ((self.config.polling !== undefined) && self.config.polling && (self.config.interval > 0)) {
+		if (self.config.polling !== undefined && self.config.polling && self.config.interval > 0) {
 			self.INTERVAL = setInterval(self.getInformation.bind(self), self.config.interval)
 			self.log('info', 'Starting Update Interval: Every ' + self.config.interval + 'ms')
 		}
