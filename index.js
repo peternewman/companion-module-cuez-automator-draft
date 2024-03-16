@@ -63,8 +63,6 @@ class braviaInstance extends InstanceBase {
 			this.log('info', 'Verbose mode enabled. Log entries will contain detailed information.')
 		}
 
-		this.updateStatus(InstanceStatus.Connecting)
-
 		this.initConnection()
 
 		this.initActions()
