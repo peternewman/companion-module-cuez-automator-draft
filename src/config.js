@@ -30,6 +30,7 @@ module.exports = {
 				id: 'polling',
 				label: 'Enable Polling',
 				width: 12,
+				default: false,
 			},
 			{
 				type: 'static-text',
