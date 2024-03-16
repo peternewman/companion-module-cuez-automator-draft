@@ -105,24 +105,24 @@ module.exports = {
 							self.checkVariables()
 						} else {
 							if (response.statusCode == 403) {
-								self.updateStatus(InstanceStatus.ConnectionFailure)
+								self.updateStatus(InstanceStatus.ConnectionFailure, 'Error 403, PSK may be incorrect.')
 								self.log('error', 'PSK may be incorrect. Please check your PSK and try again.')
 								self.stopInterval()
 							}
 						}
 					} catch (error) {
-						self.updateStatus(InstanceStatus.UnknownError)
+						self.updateStatus(InstanceStatus.UnknownError, 'Failed to process response: ' + error)
 						self.log('error', 'Error processing response: ' + error)
 						console.log(error)
 						console.log(data)
 					}
 				})
 				.on('error', function (error) {
-					self.updateStatus(InstanceStatus.UnknownError)
+					self.updateStatus(InstanceStatus.UnknownError, 'Failed to sending command ' + error.toString())
 					self.log('error', 'Error Sending Command ' + error.toString())
 				})
 		} else {
-			self.updateStatus(InstanceStatus.BadConfig)
+			self.updateStatus(InstanceStatus.BadConfig, 'No PSK set, not sending.')
 			if (self.config.verbose) {
 				self.log('debug', 'No PSK set. Not sending command.')
 			}
