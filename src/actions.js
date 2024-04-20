@@ -66,8 +66,11 @@ module.exports = {
 					id: 'kind',
 					choices: [
 						{ id: 'hdmi', label: 'HDMI' },
+						// TODO(Someone): Add CEC, but the URI has a type and port is optional
+						{ id: 'component', label: 'Component' },
 						{ id: 'composite', label: 'Composite' },
 						{ id: 'scart', label: 'SCART' },
+						{ id: 'widi', label: 'Wi-Fi Display' },
 					],
 				},
 				{

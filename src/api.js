@@ -80,6 +80,7 @@ module.exports = {
 											self.DATA.inputs = data.result[0]
 											self.buildInputList()
 											self.initFeedbacks()
+											self.initPresets()
 											break
 										case 'power':
 											self.DATA.powerState = data.result[0].status === 'active' ? true : false
@@ -125,6 +126,29 @@ module.exports = {
 			self.updateStatus(InstanceStatus.BadConfig, 'No PSK set, not sending.')
 			if (self.config.verbose) {
 				self.log('debug', 'No PSK set. Not sending command.')
+			}
+		}
+	},
+
+	parseDeviceResourceURI: function (uri) {
+		try {
+			resourceURI = new URL(uri)
+			if (resourceURI.protocol == 'extinput:') {
+				let params = resourceURI.searchParams
+				return {
+					// Seemingly not URL.host!
+					kind: resourceURI.pathname,
+					port: parseInt(params.get('port')),
+				}
+			} else {
+				return undefined
+			}
+		} catch (e) {
+			// instanceof doesn't seem to work directly
+			if (e.name == 'TypeError') {
+				return undefined
+			} else {
+				throw e
 			}
 		}
 	},

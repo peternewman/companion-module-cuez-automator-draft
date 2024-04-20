@@ -200,6 +200,43 @@ module.exports = {
 			],
 		}
 
+		for (const input of this.CHOICES_INPUTS) {
+			presets[`select_source_${input.label}`] = {
+				category: 'Source',
+				name: `Select source ${input.label}`,
+				type: 'button',
+				style: {
+					text: input.label,
+					size: '18',
+					color: foregroundColor,
+					bgcolor: foregroundColorBlack,
+				},
+				feedbacks: [
+					{
+						feedbackId: 'currentInput',
+						style: {
+							bgcolor: backgroundColorYellow,
+							color: foregroundColorBlack,
+						},
+						options: {
+							input: input.id,
+						},
+					},
+				],
+				steps: [
+					{
+						down: [
+							{
+								actionId: 'change_external_input',
+								options: self.parseDeviceResourceURI(input.id),
+							},
+						],
+						up: [],
+					},
+				],
+			}
+		}
+
 		self.setPresetDefinitions(presets)
 	},
 }
