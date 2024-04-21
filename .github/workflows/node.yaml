@@ -25,6 +25,9 @@ jobs:
           yarn install
         env:
           CI: true
+      - name: prettier
+        run: |
+          yarn prettier --check .
       - name: Test jest
         run: |
           yarn test
@@ -35,6 +38,3 @@ jobs:
           yarn companion-module-build
         env:
           CI: true
-      - name: prettier
-        run: |
-          yarn prettier --check .
