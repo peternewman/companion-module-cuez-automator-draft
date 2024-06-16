@@ -1,6 +1,6 @@
 {
-	"name": "sony-bravia",
-	"version": "2.0.2",
+	"name": "tinkerlist-cuez-automator",
+	"version": "3.0.0",
 	"main": "index.js",
 	"scripts": {
 		"format": "prettier -w .",
@@ -8,7 +8,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/bitfocus/companion-module-sony-bravia.git"
+		"url": "git+https://github.com/bitfocus/companion-module-tinkerlist-cuez-automator.git"
 	},
 	"license": "MIT",
 	"prettier": "@companion-module/tools/.prettierrc.json",
